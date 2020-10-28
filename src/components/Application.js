@@ -3,75 +3,38 @@ import axios from "axios";
 
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
+import { getAppointmentsForDay } from "../helpers/selectors";
 
 import "components/Application.scss";
-
-
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time:"2pm",
-    interview: {
-      student: "Alexander Scaini",
-      interviewer: { id: 2,
-        name: "Tori Malcolm",
-        avatar: "https://i.imgur.com/Nmx0Qxo.png" 
-      }
-    }
-  },
-  {
-    id: 4,
-    time: "3pm",
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "Jason Long",
-      interviewer: { 
-        id: 5,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg"
-      }
-    }
-  }
-];
-
 
 export default function Application(props) {
 
   const [state, setState] = useState({
     day: "Monday",
     days: [],
+    appointments: {},
   });
 
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+
   const setDay = day => setState({ ...state, day });
-  const setDays = (days) => {
-    setState(prev => ({ ...prev, days }));
-  }
-
-
+ 
   useEffect(() => {
-    axios.get("http://localhost:8001/api/days").then(response => {
-      setDays(response.data)
-    })
+    Promise.all([
+      Promise.resolve(
+        axios.get("http://localhost:8001/api/days")
+      ),
+      Promise.resolve(
+        axios.get("http://localhost:8001/api/appointments")
+      ),
+      // Promise.resolve(
+      //   axios.get("http://localhost:8001/api/interviewers")
+      // )
+    ]).then((all) => {
+      console.log(all[1].data)
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data}));
+    });
+
   }, [])
 
   return (
@@ -99,10 +62,12 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        {appointments.map(appointment => {
+        {dailyAppointments.map(appointment => {
           return <Appointment key={appointment.id} {...appointment} />
         })}
       </section>
     </main>
   );
 }
+
+
