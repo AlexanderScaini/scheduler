@@ -17,6 +17,11 @@ export default function Form(props) {
       props.onCancel()
       reset()
   }
+
+  function getInterviewerById() {
+    const filteredInterviewer = props.interviewers.filter(interviewer => interviewer.id === interviewerId)
+    return {...filteredInterviewer[0]}
+  }
  
   return (
     <main className="appointment__card appointment__card--create">
@@ -40,7 +45,7 @@ export default function Form(props) {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onClick={props.onSave}>Save</Button>
+          <Button confirm onClick={props.onSave(name, getInterviewerById())} >Save</Button>
         </section>
       </section>
     </main>
