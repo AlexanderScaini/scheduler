@@ -23,8 +23,8 @@ export function getInterview(state, interview) {
   }
   const filteredInterviewer = state.interviewers[interview.interviewer]
   const filteredInterview = {
-    interviewer: {...filteredInterviewer},
-    student: interview.student,
+    ...interview,
+    interviewer: filteredInterviewer,
   }
   // console.log(filteredInterview)
   return filteredInterview

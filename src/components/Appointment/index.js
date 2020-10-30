@@ -1,6 +1,5 @@
 import React from "react";
 
-import Header from 'components/Appointment/Header.js';
 import Empty from 'components/Appointment/Empty.js';
 import Show from 'components/Appointment/Show.js';
 import Form from 'components/Appointment/Form.js';
@@ -23,7 +22,9 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
+    // console.log(interview)
     props.bookInterview(props.id, interview)
+    .then(() => transition(SHOW))
   }
 
 
@@ -34,7 +35,10 @@ export default function Appointment(props) {
         student={props.interview.student} 
         interviewer={props.interview.interviewer}
       />)}
-      {mode === CREATE && <Form interviewers={props.interviewers} onCancel={() => back()} onSave={save} />}
+      {mode === CREATE && <Form 
+      interviewers={props.interviewers}
+      onCancel={() => back()}
+      onSave={(name, interviewer) => save(name, interviewer)} />}
     </div>
     
   )
