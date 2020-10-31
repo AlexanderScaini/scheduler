@@ -5,6 +5,7 @@ import Show from 'components/Appointment/Show.js';
 import Form from 'components/Appointment/Form.js';
 import Status from 'components/Appointment/Status.js';
 import Confirm from 'components/Appointment/Confirm.js';
+import Error from 'components/Appointment/Error.js';
 
 import { useVisualMode } from '../../hooks/useVisualMode.js'
 
@@ -18,6 +19,8 @@ export default function Appointment(props) {
   const CONFIRM = "CONFIRM";
   const DELETING = "DELETING"
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -31,6 +34,7 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
     .then(() => transition(SHOW))
+    .catch(error => transition(ERROR_SAVE, true));
   }
 
   function confirming() {
@@ -38,14 +42,14 @@ export default function Appointment(props) {
   }
 
   function trash() {
-    transition(DELETING)
+    transition(DELETING, true)
     props.cancelInterview(props.id)
     .then(() => transition(EMPTY))
+    .catch(error => transition(ERROR_DELETE, true));
   }
 
   function edit() {
     transition(EDIT)
-    console.log(props)
   }
 
   return (
@@ -61,7 +65,7 @@ export default function Appointment(props) {
       interviewers={props.interviewers}
       onCancel={() => back()}
       onSave={(name, interviewer) => save(name, interviewer)} />}
-      {mode === SAVING && <Status />}
+      {mode === SAVING && <Status message={"Saving"}/>}
       {mode === CONFIRM && <Confirm 
       message={"Are you sure you would like to delete?"}
       onConfirm={trash}
@@ -75,6 +79,14 @@ export default function Appointment(props) {
       onCancel={() => back()}
       onSave={(name, interviewer) => save(name, interviewer)} 
       />} 
+      {mode === ERROR_DELETE && <Error 
+      message={"Could not delete this appointment"}
+      onClose={back}
+      />}
+       {mode === ERROR_SAVE && <Error 
+      message={"Could not make this appointment"}
+      onClose={back}
+      />}
     </div>
     
   )
