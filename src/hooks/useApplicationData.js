@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import DayListItem from "components/DayListItem";
+
 // import DayList from "components/DayList";
 // import DayListItem from "components/DayListItem";
 
