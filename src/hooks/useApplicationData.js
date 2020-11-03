@@ -49,7 +49,7 @@ export function useApplicationData() {
       return newDay
     })
 
-    console.log(updatedDays)
+    // console.log(updatedDays)
 
     return axios.put(`http://localhost:8001/api/appointments/${id}`,appointment)
     .then(() => setState({...state, appointments: updatedAppointments, days: updatedDays}))

@@ -54,6 +54,7 @@ export default function Appointment(props) {
 
   return (
     <div>
+      <article data-testid={"appointment"}>
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (<Show 
         student={props.interview && props.interview.student} 
@@ -87,8 +88,8 @@ export default function Appointment(props) {
       message={"Could not make this appointment"}
       onClose={back}
       />}
+      </article>
     </div>
-    
   )
 }
 
