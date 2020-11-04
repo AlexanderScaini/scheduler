@@ -1,5 +1,12 @@
 # Interview Scheduler
 
+!["Desktop"](https://raw.githubusercontent.com/AlexanderScaini/scheduler/master/docs/desktop.png)
+
+!["Mobile"](https://raw.githubusercontent.com/AlexanderScaini/scheduler/master/docs/mobile.png)
+
+!["Appointment form"](https://raw.githubusercontent.com/AlexanderScaini/scheduler/master/docs/appointments.png)
+
+!["Day List"](https://raw.githubusercontent.com/AlexanderScaini/scheduler/master/docs/day-list.png)
 
 
 ## Setup
